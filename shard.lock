@@ -1,0 +1,10 @@
+version: 1.0
+shards:
+  crustache:
+    github: MakeNowJust/crustache
+    version: 2.4.1
+
+  markd:
+    github: icyleaf/markd
+    version: 0.2.0
+

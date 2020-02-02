@@ -1,0 +1,19 @@
+name: site
+version: 0.1.0
+
+authors:
+  - Oren <orengolan@gmail.com>
+
+targets:
+  site:
+    main: src/site.cr
+
+dependencies:
+  markd:
+    github: icyleaf/markd
+  crustache:
+    github: MakeNowJust/crustache
+
+crystal: 0.32.1
+
+license: MIT
