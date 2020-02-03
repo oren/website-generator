@@ -24,24 +24,40 @@ module Site
 		file = ARGV[0]
 	end
 
-	#outputPath = "#{File.basename(file, File.extname(file))}.html"
-	dir = File.dirname(file)
+	dir = ""
+	begin
+		dir = File.dirname(file)
+	rescue ex
+		puts ex.message
+		exit
+	end
+
   outputPath = "#{dir}/index.html"
 
-	# read md file
-	# convert to markdown
-	# inject into html template file
-	markdown = File.read(file)
-	html = Markd.to_html(markdown)
+	markdown = ""
+	begin
+		markdown = File.read(file)
+	rescue ex
+		puts ex.message
+		exit
+	end
 
-	navMarkdown = File.read("#{dir}/_navbar.md")
-	navHTML = Markd.to_html(navMarkdown)
-  # navHTML = "<ul><li><a href='#/'>Home</a> &gt; <a href='#/articles/' class='active'>Articles</a></li></ul>"
+	html = Markd.to_html(markdown)
+	navHTML = ""
+
+	begin
+		navMarkdown = File.read("#{dir}/_navbar.md")
+		navHTML = Markd.to_html(navMarkdown)
+	rescue ex
+		# do nothing
+	end
+
 	model = {"main_content" => html, "navbar" => navHTML}
 
 	template = File.read("template.html")
 	template = Crustache.parse template
 
+	# inject main content and navbar
 	result = Crustache.render template, model
 
 	File.write(outputPath, result)
