@@ -19,9 +19,8 @@ module Site
 		end
 	end
 
-
 	file = "index.md"
-	if ARGV[0]
+	if !ARGV.empty?
 		file = ARGV[0]
 	end
 
@@ -42,7 +41,6 @@ module Site
 	template = Crustache.parse template
 
 	result = Crustache.render template, model
-	puts outputPath
 
 	File.write(outputPath, result)
 end
