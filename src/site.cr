@@ -34,7 +34,9 @@ module Site
 	markdown = File.read(file)
 	html = Markd.to_html(markdown)
 
-	navHTML = "<ul><li><a href='#/'>Home</a> &gt; <a href='#/articles/' class='active'>Articles</a></li></ul>"
+	navMarkdown = File.read("#{dir}/_navbar.md")
+	navHTML = Markd.to_html(navMarkdown)
+  # navHTML = "<ul><li><a href='#/'>Home</a> &gt; <a href='#/articles/' class='active'>Articles</a></li></ul>"
 	model = {"main_content" => html, "navbar" => navHTML}
 
 	template = File.read("template.html")
