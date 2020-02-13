@@ -22,10 +22,6 @@ module Site
 	end
 end
 
-# function that works on folder
-# path of folder as argument
-# convert each md file to html
-# each folder - call the same function
 class Generator
 	@file = "index.md"
 
@@ -35,7 +31,7 @@ class Generator
 			exit
 		end
 
-		convert_folder
+		convert_folder @file
 		exit
 	end
 
@@ -94,9 +90,29 @@ class Generator
 		File.write(outputPath, result)
 	end
 
-	def convert_folder
+	def convert_folder (folder : String)
 		puts "converting a folder"
+		# if .md file exist - convert it
+		if(File.file?(folder + "/README.md"))
+			 convert_file(folder + "/README.md")
+		else
+			 puts "file doesn't exist"
+		end
+
+		# for each folder - call myself
+		dir = Dir.open(folder)
+		dir.each_child { |x|
+			puts File.expand_path(x)
+			puts File.directory?(File.expand_path(x))
+			puts "---"
+		}
+	end
+
+	def run2
+		puts File.directory?("/home/oren/p/oren.github.io/articles/ai")
+		folder = "/home/oren/p/oren.github.io/articles/ai"
+		puts folder.split("/")
 	end
 end
 
-Generator.new.run
+Generator.new.run2
