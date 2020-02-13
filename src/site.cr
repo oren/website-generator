@@ -48,7 +48,7 @@ class Generator
 	end
 
 	def convert_file (file : String)
-		puts "converting a markdown file: #{file}"
+		puts "converting the markdown file: #{file}"
 		dir = ""
 		begin
 			dir = File.dirname(file)
@@ -78,7 +78,6 @@ class Generator
 			# do nothing
 		end
 
-
 		model = {"main_content" => html, "navbar" => navHTML}
 
 		template = File.read("template.html")
@@ -91,28 +90,23 @@ class Generator
 	end
 
 	def convert_folder (folder : String)
-		puts "converting a folder"
+		puts "converting the folder #{folder}"
 		# if .md file exist - convert it
 		if(File.file?(folder + "/README.md"))
 			 convert_file(folder + "/README.md")
-		else
-			 puts "file doesn't exist"
 		end
 
 		# for each folder - call myself
 		dir = Dir.open(folder)
 		dir.each_child { |x|
-			puts File.expand_path(x)
-			puts File.directory?(File.expand_path(x))
-			puts "---"
+			path = File.expand_path(x, folder)
+			isDirectory = File.directory?(path)
+			if isDirectory
+				convert_folder path
+			end
 		}
 	end
 
-	def run2
-		puts File.directory?("/home/oren/p/oren.github.io/articles/ai")
-		folder = "/home/oren/p/oren.github.io/articles/ai"
-		puts folder.split("/")
-	end
 end
 
-Generator.new.run2
+Generator.new.run
