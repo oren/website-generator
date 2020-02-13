@@ -7,7 +7,7 @@ shards install
 crystal build src/site.cr
 ```
 
-Generate html
+Generate html when given a markdown file
 ```
 ./site some-markdown-file.md
 
@@ -16,3 +16,6 @@ Generate html
 
 if a file named _navbar.md exist in the same folder, it will convert it's content to html and append it to the top of the html file.
 
+
+## TODO
+* Generate multiple html files when given a folder with markdown files (including subfolders)
