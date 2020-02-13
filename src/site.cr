@@ -19,12 +19,40 @@ module Site
 				exit
 			end
 		end
+	end
+end
 
-		file = "index.md"
-		if !ARGV.empty?
-			file = ARGV[0]
+# function that works on folder
+# path of folder as argument
+# convert each md file to html
+# each folder - call the same function
+class Generator
+	@file = "index.md"
+
+	def run
+		if markdown_file?
+			convert_file @file
+			exit
 		end
 
+		convert_folder
+		exit
+	end
+
+	def markdown_file?
+		if !ARGV.empty?
+			@file = ARGV[0]
+		end
+
+		if File.extname(@file) == ".md"
+			return true
+		end
+
+		false
+	end
+
+	def convert_file (file : String)
+		puts "converting a markdown file: #{file}"
 		dir = ""
 		begin
 			dir = File.dirname(file)
@@ -64,40 +92,6 @@ module Site
 		result = Crustache.render template, model
 
 		File.write(outputPath, result)
-	end
-end
-
-# function that works on folder
-# path of folder as argument
-# convert each md file to html
-# each folder - call the same function
-class Generator
-	@file = "index.md"
-
-	def run
-		if markdown_file?
-			convert_markdown
-			exit
-		end
-
-		convert_folder
-		exit
-	end
-
-	def markdown_file?
-		if !ARGV.empty?
-			@file = ARGV[0]
-		end
-
-		if File.extname(@file) == ".md"
-			return true
-		end
-
-		false
-	end
-
-	def convert_markdown
-		puts "converting a markdown file"
 	end
 
 	def convert_folder
