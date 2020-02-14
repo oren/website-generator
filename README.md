@@ -7,6 +7,17 @@ You have two ways to run it - on a .md file or on a folder. If you run it on a f
 
 For every markdown file it finds, it will look for _navbar.md at a folder above. If it finds one, it will use it as a navigation bar for this html file.
 
+## Usage
+Create html files from all markdown files in a given folder:
+```
+./site some-folder
+```
+
+Create an html file of a specific markdown file:
+```
+./site some-markdown-file.md
+```
+
 ## Example
 Let's say you have the following folder structure:
 ```
@@ -38,12 +49,3 @@ git clone git@github.com:oren/website-generator.git
 shards install
 crystal build src/site.cr
 ```
-
-## Generate html when given a markdown file
-```
-./site some-markdown-file.md
-
-#=> index.html
-```
-
-
