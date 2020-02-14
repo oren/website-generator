@@ -1,6 +1,12 @@
 # Website Generator
 This is a static site generator. It creates html files based on markdown.
 
+# Table of Contents
+1. [How does it work](#how-does-it-work?)
+2. [Usage](#usage)
+3. [Example](#example)
+4. [Install](#install)
+
 ## How does it work?
 It creates html file for each markdown file it finds in a given folder.
 You have two ways to run it - on a .md file or on a folder. If you run it on a folder it will go to all subfoldres.
