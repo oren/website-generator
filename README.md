@@ -1,5 +1,5 @@
 # Website Generator
-This is a static site generator
+This is a static site generator. It creates html files based on markdown.
 
 ## How does it work?
 It creates html file for each markdown file it finds in a given folder.
