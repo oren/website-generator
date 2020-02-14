@@ -3,25 +3,6 @@ require "crustache"
 require "option_parser"
 
 # asspmuptions - index.md and template.html and github.markdown.css exist
-module Site
-  VERSION = "0.1.0"
-
-	def tmp
-		option_parser = OptionParser.parse do |parser|
-			parser.banner = "I am your coach!"
-
-			parser.on "-v", "--version", "Show version" do
-				puts "version 1.0"
-				exit
-			end
-			parser.on "-h", "--help", "Show help" do
-				puts parser
-				exit
-			end
-		end
-	end
-end
-
 class Generator
 	@file = "index.md"
 
