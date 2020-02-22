@@ -1,27 +1,37 @@
+# Program that convenrts mardown files into html
+
+# Usage:
+# 1. Convert a single markdown file: ./site path/to/markdownfile.md
+# 2. Convert all markdown files inside a folder: ./site path/to/folder
+
 require "markd"
 require "crustache"
 
 TEMPLATE = {{ read_file("template.html") }}
 
 class Generator
-	@file = "index.md"
-
 	def run
-		if markdown_file?
-			convert_file @file
+		if ARGV.empty?
+			abort "Please provide an argument - markdown file or a folder"
+		end
+
+		isDir = File.directory?(ARGV[0])
+
+		if isDir
+			convert_folder ARGV[0]
 			exit
 		end
 
-		convert_folder @file
-		exit
+		if markdown_file?
+			convert_file ARGV[0]
+			exit
+		end
+
+		abort "Please provide a markdown file with an .md extention"
 	end
 
 	def markdown_file?
-		if !ARGV.empty?
-			@file = ARGV[0]
-		end
-
-		if File.extname(@file) == ".md"
+		if File.extname(ARGV[0]) == ".md"
 			return true
 		end
 
@@ -34,7 +44,8 @@ class Generator
 		begin
 			dir = File.dirname(file)
 		rescue ex
-			puts ex.message
+			puts "Can't open #{file}"
+			# puts ex.message
 			exit
 		end
 
