@@ -1,8 +1,8 @@
 require "markd"
 require "crustache"
-require "option_parser"
 
-# asspmuptions - index.md and template.html and github.markdown.css exist
+TEMPLATE = {{ read_file("template.html") }}
+
 class Generator
 	@file = "index.md"
 
@@ -61,8 +61,7 @@ class Generator
 
 		model = {"main_content" => html, "navbar" => navHTML}
 
-		template = File.read("template.html")
-		template = Crustache.parse template
+		template = Crustache.parse TEMPLATE
 
 		# inject main content and navbar
 		result = Crustache.render template, model
@@ -87,7 +86,6 @@ class Generator
 			end
 		}
 	end
-
 end
 
 Generator.new.run
