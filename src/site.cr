@@ -1,16 +1,38 @@
-# Program that convenrts mardown files into html
+# Program that convenrts markdown files into html
 
 # Usage:
 # 1. Convert a single markdown file: ./site path/to/markdownfile.md
 # 2. Convert all markdown files inside a folder: ./site path/to/folder
 
+require "option_parser"
 require "markd"
 require "crustache"
 
 TEMPLATE = {{ read_file("template.html") }}
 
+numbers = false
+
+option_parser = OptionParser.parse do |parser|
+	parser.banner = "Program that convenrts markdown files into html.
+Usage: site [--numbers] [Folder|File]"
+
+	parser.on "-v", "--version", "Show version" do
+		puts "version 1.0"
+		exit
+	end
+	parser.on "-h", "--help", "Show help" do
+		puts parser
+		exit
+	end
+	parser.on "-n", "--numbers", "Add numbers to h2" do
+		numbers = true
+	end
+end
+
+Generator.new.run(numbers)
+
 class Generator
-	def run
+	def run (numbers : Bool)
 		if ARGV.empty?
 			convert_folder "."
 			exit
@@ -24,6 +46,10 @@ class Generator
 		end
 
 		if markdown_file?
+			if numbers
+				add_numbers ARGV[0]
+			end
+
 			convert_file ARGV[0]
 			exit
 		end
@@ -31,7 +57,7 @@ class Generator
 		abort "Please provide a markdown file with an .md extention"
 	end
 
-	def markdown_file?
+	private def markdown_file?
 		if File.extname(ARGV[0]) == ".md"
 			return true
 		end
@@ -39,7 +65,7 @@ class Generator
 		false
 	end
 
-	def convert_file (file : String)
+	private def convert_file (file : String)
 		puts "convert #{file}"
 		dir = ""
 		begin
@@ -81,7 +107,7 @@ class Generator
 		File.write(outputPath, result)
 	end
 
-	def convert_folder (folder : String)
+	private def convert_folder (folder : String)
 		# if .md file exist - convert it
 		if(File.file?(folder + "/README.md"))
 			 convert_file(folder + "/README.md")
@@ -97,6 +123,25 @@ class Generator
 			end
 		}
 	end
+
+	# Add numbers to h2
+	# ## Hello => ## 1. Hello
+	private def add_numbers (path_to_markdown : String)
+		output = ""
+		text = File.read(path_to_markdown)
+
+		number = 1
+		text.each_line do |line|
+		  line_with_number = line.gsub(/##/, "## #{number}.")
+
+			if line != line_with_number
+				number += 1
+			end
+
+			output += line_with_number + "\n"
+		end
+
+		File.write(path_to_markdown, output)
+	end
 end
 
-Generator.new.run
