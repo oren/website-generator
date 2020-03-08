@@ -39,7 +39,7 @@ class Generator
 	end
 
 	def convert_file (file : String)
-		puts "converting the markdown file: #{file}"
+		puts "convert #{file}"
 		dir = ""
 		begin
 			dir = File.dirname(file)
@@ -81,7 +81,6 @@ class Generator
 	end
 
 	def convert_folder (folder : String)
-		puts "converting the folder #{folder}"
 		# if .md file exist - convert it
 		if(File.file?(folder + "/README.md"))
 			 convert_file(folder + "/README.md")

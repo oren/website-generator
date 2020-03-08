@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  cmark:
+    github: amauryt/cr-cmark-gfm
+    commit: 638ef0e34c0cd6a96a28559704af7c9081743e87
+
   crustache:
     github: MakeNowJust/crustache
     version: 2.4.1
