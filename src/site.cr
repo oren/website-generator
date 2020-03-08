@@ -12,7 +12,8 @@ TEMPLATE = {{ read_file("template.html") }}
 class Generator
 	def run
 		if ARGV.empty?
-			abort "Please provide an argument - markdown file or a folder"
+			convert_folder "."
+			exit
 		end
 
 		isDir = File.directory?(ARGV[0])
