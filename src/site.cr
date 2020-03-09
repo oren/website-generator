@@ -30,7 +30,6 @@ Usage: site [--numbers] [Folder|File]"
 end
 
 Generator.new.run(numbers)
-# Generator.new.test
 
 class Generator
 	def run (numbers : Bool)
@@ -152,16 +151,6 @@ class Generator
 		end
 
 		File.write(path_to_markdown, output)
-	end
-
-	def test
-		line = "## 1. Leadership"
-		match = line.match(/^## \d+./)
-		p match
-
-		line = "## Leadership"
-		match = line.match(/^## \d+./)
-		p match
 	end
 end
 
