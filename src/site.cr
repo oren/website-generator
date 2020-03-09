@@ -10,8 +10,6 @@ require "crustache"
 
 TEMPLATE = {{ read_file("template.html") }}
 
-numbers = false
-
 option_parser = OptionParser.parse do |parser|
 	parser.banner = "Program that convenrts markdown files into html.
 Usage: site [--numbers] [Folder|File]"
@@ -24,15 +22,12 @@ Usage: site [--numbers] [Folder|File]"
 		puts parser
 		exit
 	end
-	parser.on "-n", "--numbers", "Add numbers to h2" do
-		numbers = true
-	end
 end
 
-Generator.new.run(numbers)
+Generator.new.run
 
 class Generator
-	def run (numbers : Bool)
+	def run
 		if ARGV.empty?
 			convert_folder "."
 			exit
@@ -46,10 +41,6 @@ class Generator
 		end
 
 		if markdown_file?
-			if numbers
-				add_numbers ARGV[0]
-			end
-
 			convert_file ARGV[0]
 			exit
 		end
@@ -75,6 +66,8 @@ class Generator
 			# puts ex.message
 			exit
 		end
+
+		add_numbers file
 
 		outputPath = "#{dir}/index.html"
 
@@ -124,12 +117,18 @@ class Generator
 		}
 	end
 
-	# Add numbers to h2
-	# ## Leadership => ## 1. Leadership
-	# If number exist - re-number it
+	# if file has <!-- numbers -->
+	#   Add numbers to each h2 in the markdown file
+	#   for example: ## Leadership => ## 1. Leadership
+	#   If number exist - re-number it
 	private def add_numbers (path_to_markdown : String)
 		output = ""
 		text = File.read(path_to_markdown)
+		match = text.match(/<!-- numbers -->/)
+
+		if !match
+			return
+		end
 
 		number = 1
 		text.each_line do |line|
