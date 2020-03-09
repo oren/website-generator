@@ -30,6 +30,7 @@ Usage: site [--numbers] [Folder|File]"
 end
 
 Generator.new.run(numbers)
+# Generator.new.test
 
 class Generator
 	def run (numbers : Bool)
@@ -125,23 +126,42 @@ class Generator
 	end
 
 	# Add numbers to h2
-	# ## Hello => ## 1. Hello
+	# ## Leadership => ## 1. Leadership
+	# If number exist - re-number it
 	private def add_numbers (path_to_markdown : String)
 		output = ""
 		text = File.read(path_to_markdown)
 
 		number = 1
 		text.each_line do |line|
-		  line_with_number = line.gsub(/##/, "## #{number}.")
-
-			if line != line_with_number
+			match = line.match(/^## \d+./)
+			if match
+				line_with_number = line.gsub(/^## \d+./, "## #{number}.")
 				number += 1
+			else
+				match = line.match(/^## /)
+				if match
+					line_with_number = line.gsub(/^## /, "## #{number}. ")
+					number += 1
+				else
+					line_with_number = line
+				end
 			end
 
 			output += line_with_number + "\n"
 		end
 
 		File.write(path_to_markdown, output)
+	end
+
+	def test
+		line = "## 1. Leadership"
+		match = line.match(/^## \d+./)
+		p match
+
+		line = "## Leadership"
+		match = line.match(/^## \d+./)
+		p match
 	end
 end
 
