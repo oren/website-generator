@@ -80,17 +80,26 @@ class Generator
 		end
 
 		html = Markd.to_html(markdown)
-		navHTML = ""
 
+		navHTML = ""
 		begin
-			dir = File.expand_path("..", dir)
-			navMarkdown = File.read("#{dir}/_navbar.md")
+			nav_dir = File.expand_path("..", dir)
+			navMarkdown = File.read("#{nav_dir}/_navbar.md")
 			navHTML = Markd.to_html(navMarkdown)
 		rescue ex
 			# do nothing
 		end
 
-		model = {"main_content" => html, "navbar" => navHTML}
+		sideHTML = ""
+		begin
+			side_dir = File.expand_path(dir)
+			sideMarkdown = File.read("#{side_dir}/_sidebar.md")
+			sideHTML = Markd.to_html(sideMarkdown)
+		rescue ex
+			# do nothing
+		end
+
+		model = {"main_content" => html, "sidebar" => sideHTML, "navbar" => navHTML}
 
 		template = Crustache.parse TEMPLATE
 
